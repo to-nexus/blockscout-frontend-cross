@@ -107,6 +107,13 @@ const Stats = () => {
         href: { pathname: '/batches' as const },
         isLoading,
       },
+      { // CROSS ADD
+        id: 'hourly_tps' as const,
+        icon: 'transactions_slim' as const, 
+        label: 'TPS (1h avg)',
+        value: Number(data.hourly_tps).toLocaleString(), // 서버에서 받은 TPS 값
+        isLoading,
+      },
       {
         id: 'total_blocks' as const,
         icon: 'block_slim' as const,

@@ -36,44 +36,44 @@ const Footer = () => {
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const logoColor = useColorModeValue('blue.600', 'white');
 
-  const BLOCKSCOUT_LINKS = [
-    {
-      icon: 'edit' as const,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
-      icon: 'social/git' as const,
-      iconSize: '18px',
-      text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
-    },
-    {
-      icon: 'social/twitter' as const,
-      iconSize: '18px',
-      text: 'X (ex-Twitter)',
-      url: 'https://www.twitter.com/blockscoutcom',
-    },
-    {
-      icon: 'social/discord' as const,
-      iconSize: '24px',
-      text: 'Discord',
-      url: 'https://discord.gg/blockscout',
-    },
-    {
-      icon: 'brands/blockscout' as const,
-      iconSize: '18px',
-      text: 'All chains',
-      url: 'https://www.blockscout.com/chains-and-projects',
-    },
-    {
-      icon: 'donate' as const,
-      iconSize: '20px',
-      text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
-    },
-  ];
+  // const BLOCKSCOUT_LINKS = [ // CROSS
+    // {
+    //   icon: 'edit' as const,
+    //   iconSize: '16px',
+    //   text: 'Submit an issue',
+    //   url: issueUrl,
+    // },
+    // {
+    //   icon: 'social/git' as const,
+    //   iconSize: '18px',
+    //   text: 'Contribute',
+    //   url: 'https://github.com/blockscout/blockscout',
+    // },
+    // {
+    //   icon: 'social/twitter' as const,
+    //   iconSize: '18px',
+    //   text: 'X (ex-Twitter)',
+    //   url: 'https://www.twitter.com/blockscoutcom',
+    // },
+    // {
+    //   icon: 'social/discord' as const,
+    //   iconSize: '24px',
+    //   text: 'Discord',
+    //   url: 'https://discord.gg/blockscout',
+    // },
+    // {
+    //   icon: 'brands/blockscout' as const,
+    //   iconSize: '18px',
+    //   text: 'All chains',
+    //   url: 'https://www.blockscout.com/chains-and-projects',
+    // },
+    // {
+    //   icon: 'donate' as const,
+    //   iconSize: '20px',
+    //   text: 'Donate',
+    //   url: 'https://github.com/sponsors/blockscout',
+    // },
+  // ];
 
   const frontendLink = (() => {
     if (config.UI.footer.frontendVersion) {
@@ -97,7 +97,9 @@ const Footer = () => {
     placeholderData: [],
   });
 
-  const colNum = isPlaceholderData ? 1 : Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
+  // const colNum = isPlaceholderData ? 1 : Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
+  const colNum = isPlaceholderData ? 1 : Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS); // CORSS Col No Add + 1, BlockScout defualt col delete
+
 
   const renderNetworkInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
@@ -192,7 +194,8 @@ const Footer = () => {
           </div>
 
           <Grid
-            gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
+            // gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }} // CROSS
+            gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS ? 2 : 8, xl: 12 }}
             gridTemplateColumns={{
               base: 'repeat(auto-fill, 160px)',
               lg: `repeat(${ colNum }, 135px)`,
@@ -202,12 +205,14 @@ const Footer = () => {
             mt={{ base: 8, lg: 0 }}
           >
             {
-              ([
-                { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
-                ...(linksData || []),
-              ])
-                .slice(0, colNum)
-                .map(linkGroup => (
+              // CROSS
+              // ([
+              //   { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
+              //   ...(linksData || []),
+              // ])
+              //   .slice(0, colNum)
+              //   .map(linkGroup => (
+                  linksData?.map(linkGroup => (
                   <Box key={ linkGroup.title }>
                     <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
                     <VStack spacing={ 1 } alignItems="start">
@@ -257,7 +262,10 @@ const Footer = () => {
           justifyContent={{ lg: 'flex-end' }}
           mt={{ base: 8, lg: 0 }}
         >
-          { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+          {/* { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) } */}
+          { linksData?.map(linkGroup => 
+            linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text }/>)
+          ) }
         </Grid>
       </Grid>
     </Box>

@@ -8,43 +8,46 @@ try {
     invert_logo: !process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK,
   };
 
-  // CROSS
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000); 
-
   console.log('⏳ Making request to OG image generator service...');
-  const response = await fetch('https://bigs.services.blockscout.com/generate/og', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    signal: controller.signal 
-  });
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5초 timeout
 
-  // CROSS
-  clearTimeout(timeoutId);
+  try {
+    const response = await fetch('https://bigs.services.blockscout.com/generate/og', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      signal: controller.signal
+    });
 
-  if (response.ok) {
-    console.log('⬇️  Downloading the image...');
-    const buffer = await response.arrayBuffer();
-    const imageBuffer = Buffer.from(buffer);
-    fs.writeFileSync(targetFile, imageBuffer);
-  } else {
-    const payload = response.headers.get('Content-type')?.includes('application/json') 
-      ? await response.json() 
-      : await response.text();
-    console.error('🛑 Failed to generate OG image. Response:', payload);
+    clearTimeout(timeoutId); // 성공적으로 응답을 받으면 타이머 제거
+
+    if (response.ok) {
+      console.log('⬇️  Downloading the image...');
+      const buffer = await response.arrayBuffer();
+      const imageBuffer = Buffer.from(buffer);
+      fs.writeFileSync(targetFile, imageBuffer);
+    } else {
+      const payload = response.headers.get('Content-type')?.includes('application/json') ? await response.json() : await response.text();
+      console.error('🛑 Failed to generate OG image. Response:', payload);
+      console.log('Copying placeholder image...');
+      copyPlaceholderImage();
+    }
+  } catch (fetchError) {
+    clearTimeout(timeoutId);
+    if (fetchError.name === 'AbortError') {
+      console.error('🛑 Request timed out after 5 seconds');
+    } else {
+      console.error('🛑 Fetch error:', fetchError?.message);
+    }
     console.log('Copying placeholder image...');
     copyPlaceholderImage();
   }
 } catch (error) {
-  // AbortError와 일반 에러 구분 가능
-  if (error.name === 'AbortError') {
-    console.error('🛑 OG image generation timed out');
-  } else {
-    console.error('🛑 Failed to generate OG image. Error:', error?.message);
-  }
+  console.error('🛑 Failed to generate OG image. Error:', error?.message);
   console.log('Copying placeholder image...');
   copyPlaceholderImage();
 }

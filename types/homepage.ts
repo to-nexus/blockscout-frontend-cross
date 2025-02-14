@@ -1,8 +1,10 @@
 export const CHAIN_INDICATOR_IDS = [ 'daily_txs', 'coin_price', 'secondary_coin_price', 'market_cap', 'tvl' ] as const;
 export type ChainIndicatorId = typeof CHAIN_INDICATOR_IDS[number];
 
+// CROSS ADD
 export const HOME_STATS_WIDGET_IDS = [
   'latest_batch',
+  'hourly_tps',
   'total_blocks',
   'average_block_time',
   'total_txs',

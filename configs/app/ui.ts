@@ -26,6 +26,7 @@ const hiddenLinks = (() => {
   return result;
 })();
 
+// CROSS ADD
 const homePageStats: Array<HomeStatsWidgetId> = (() => {
   const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));
 
@@ -33,10 +34,10 @@ const homePageStats: Array<HomeStatsWidgetId> = (() => {
     const rollupFeature = features.rollup;
 
     if (rollupFeature.isEnabled && [ 'zkEvm', 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
-      return [ 'latest_batch', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
+      return [ 'latest_batch', 'hourly_tps', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
     }
 
-    return [ 'total_blocks', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
+    return [ 'total_blocks', 'hourly_tps', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
   }
 
   return parsedValue.filter((item) => HOME_STATS_WIDGET_IDS.includes(item));

@@ -1,0 +1,32 @@
+[
+    {
+      "title": "Cross",
+      "links": [
+        {
+          "text": "Home",
+          "url": "https://to.nexus/"
+        },
+        {
+          "text": "Docs",
+          "url": "https://blockscout.crossops.in"
+        },
+        {
+          "text": "Terms of Service",
+          "url": "https://blockscout.crossops.in"
+        },
+        {
+          "text": "Privacy Policy",
+          "url": "https://blockscout.crossops.in"
+        }
+      ]
+    },
+    {
+      "title": "Community",
+      "links": [
+        {
+          "text": "Discord",
+          "url": "https://blockscout.crossops.in"
+        }
+      ]
+    }
+]

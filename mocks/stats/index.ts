@@ -42,6 +42,8 @@ export const base: HomeStats = {
   total_transactions: '82258122',
   transactions_today: '26815',
   tvl: '1767425.102766552',
+  // CROSS ADD
+  hourly_tps: '0', 
 };
 
 export const withBtcLocked: HomeStats = {

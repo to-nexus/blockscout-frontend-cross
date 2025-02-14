@@ -1,5 +1,6 @@
 export type HomeStats = {
   total_blocks: string;
+  hourly_tps: string; // CROSS ADD
   total_addresses: string;
   total_transactions: string;
   average_block_time: number;

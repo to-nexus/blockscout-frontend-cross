@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      IMAGE_TAG: ${{ github.event.repository.name }}-${{ inputs.environment }}
+      IMAGE_TAG:  ${{ github.ref_name }}
     outputs:
       IMAGE_TAG: ${{ env.IMAGE_TAG }}
     steps:
@@ -51,7 +51,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPO }}:${{ env.IMAGE_TAG }}-${{ steps.tagging.outputs.GIT_SHA }}-frontend,${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPO }}:${{ env.IMAGE_TAG }}-frontend-latest
+          tags: ${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPO }}:${{ env.IMAGE_TAG }}-frontend,${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPO }}:frontend-latest
           platforms: linux/amd64
           build-args: |
             GIT_COMMIT_SHA=${{ env.GIT_SHA }}

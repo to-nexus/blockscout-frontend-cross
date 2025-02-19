@@ -71,7 +71,7 @@ export interface Block {
   zilliqa?: ZilliqaBlockData;
 
   // CROSS FIELDS
-  confirmed_validator: number;
+  confirmed_validator: number | null ;
 }
 
 type ArbitrumBlockData = {

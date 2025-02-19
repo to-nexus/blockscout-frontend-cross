@@ -83,7 +83,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       { !config.UI.views.block.hiddenFields?.confirmed_validator && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
-          <AddressEntity
+          <BlockEntity
             number={ data.confirmed_validator }
             isLoading={ isLoading }
             truncation="constant"

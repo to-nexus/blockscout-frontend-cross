@@ -101,7 +101,6 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <BlockGasUsed
             gasUsed={ data.gas_used }
             gasLimit={ data.gas_limit }
-            {/* CROSS Add gas_used_percent */} 
             isLoading={ isLoading }
             gasTarget={ data.gas_target_percentage }
           />

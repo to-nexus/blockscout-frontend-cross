@@ -80,16 +80,6 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       ) }
-      { !config.UI.views.block.hiddenFields?.confirmed_validator && (
-        <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
-          <BlockEntity
-            number={ data.confirmed_validator }
-            isLoading={ isLoading }
-            truncation="constant"
-          />
-        </Flex>
-      ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txs</Text>  {/* CROSS Modify Txn -> Txs */}
         { data.transaction_count > 0 ? (

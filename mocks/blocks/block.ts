@@ -56,8 +56,6 @@ export const base: Block = {
   transaction_fees: '26853607500000000',
   type: 'block',
   uncles_hashes: [],
-  // CORSS ADD
-  confirmed_validator: 0
 };
 
 export const genesis: Block = {
@@ -95,8 +93,7 @@ export const genesis: Block = {
   transaction_fees: '0',
   type: 'block',
   uncles_hashes: [],
-  // CROSS ADD
-  confirmed_validator: 0
+
 };
 
 export const base2: Block = {
@@ -114,7 +111,6 @@ export const base2: Block = {
     watchlist_names: [],
     ens_domain_name: null,
   },
-  confirmed_validator: 0,
   timestamp: '2022-11-11T11:46:05Z',
   transaction_count: 253,
   gas_target_percentage: 23.6433,

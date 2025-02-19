@@ -35,7 +35,6 @@ export const BLOCK: Block = {
   transaction_fees: '19241635547777613',
   type: 'block',
   uncles_hashes: [],
-  confirmed_validator: 0
 };
 
 const BLOCK_EPOCH_REWARD: BlockEpochElectionReward = {

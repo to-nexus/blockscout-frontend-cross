@@ -15,12 +15,12 @@ import { BLOCK } from 'stubs/block';
 import { GET_BLOCK } from 'stubs/RPC';
 import { unknownAddress } from 'ui/shared/address/utils';
 
-// type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
+type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
 
 // CROSS ADD Extention Value Type
-type RpcResponseType = (GetBlockReturnType<Chain, false, 'latest'> & {
-  confirmed_validator?: number | null;
-}) | null;
+// type RpcResponseType = (GetBlockReturnType<Chain, false, 'latest'> & {
+//   confirmed_validator?: number | null;
+// }) | null;
 
 export type BlockQuery = UseQueryResult<Block, ResourceError<{ status: number }>> & {
   isDegradedData: boolean;
@@ -92,7 +92,6 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         transaction_fees: null,
         uncles_hashes: block.uncles,
         withdrawals_count: block.withdrawals?.length,
-        confirmed_validator: block.confirmed_validator ?? null 
       };
     },
     placeholderData: GET_BLOCK,

@@ -87,7 +87,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         transaction_fees: null,
         uncles_hashes: block.uncles,
         withdrawals_count: block.withdrawals?.length,
-        confirmed_validator: block.confired_validator, // CROSS ADD
+        confirmed_validator: block.confirmed_validator, // CROSS ADD
       };
     },
     placeholderData: GET_BLOCK,

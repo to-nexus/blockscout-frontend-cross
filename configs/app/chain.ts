@@ -14,7 +14,7 @@ const verificationType: NetworkVerificationType = (() => {
   if (rollupType === 'zkEvm') {
     return 'sequencing';
   }
-  return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'mining';
+  return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'confirmed_validator'; // CROSS Modified miner -> confirmed_validator
 })();
 
 const chain = Object.freeze({

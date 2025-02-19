@@ -15,7 +15,7 @@ export default function getNetworkValidatorTitle() {
       return 'sequencer';
     }
     default: {
-      return 'miner';
+      return 'confirmed_validator'; // CROSS Modifed miner -> confirmed_validator
     }
   }
 }

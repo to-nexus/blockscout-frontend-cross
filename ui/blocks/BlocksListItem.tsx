@@ -80,8 +80,18 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       ) }
+      { !config.UI.views.block.hiddenFields?.confirmed_validator && (
+        <Flex columnGap={ 2 } w="100%">
+          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
+          <AddressEntity
+            number={ data.confirmed_validator }
+            isLoading={ isLoading }
+            truncation="constant"
+          />
+        </Flex>
+      ) }
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Txn</Text>
+        <Text fontWeight={ 500 }>Txs</Text>  {/* CROSS Modify Txn -> Txs */}
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
@@ -101,6 +111,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <BlockGasUsed
             gasUsed={ data.gas_used }
             gasLimit={ data.gas_limit }
+            {/* CROSS Add gas_used_percent */} 
             isLoading={ isLoading }
             gasTarget={ data.gas_target_percentage }
           />

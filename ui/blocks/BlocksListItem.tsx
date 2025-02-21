@@ -92,6 +92,16 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
+      { !config.UI.views.block.hiddenFields?.confirmed_validator && (
+        <Flex columnGap={ 2 } w="100%">
+          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
+          <AddressEntity
+            address={ data.miner }
+            isLoading={ isLoading }
+            truncation="constant"
+          />
+        </Flex>
+      ) }
       <Box>
         <Text fontWeight={ 500 }>Gas used</Text>
         <Flex mt={ 2 }>

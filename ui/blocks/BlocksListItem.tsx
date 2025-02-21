@@ -92,19 +92,17 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
-      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
-        <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
-          <AddressEntity
-            address={ data.miner }
-            isLoading={ isLoading }
-            truncation="constant"
-          />
+      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && data.confirmed_validator_count !== undefined && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Confirmed validators</Text>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
+            <span>{ data.confirmed_validator_count }</span>
+          </Skeleton>
         </Flex>
       ) }
-      <Box>
+      <Box columnGap={ 2 }>
         <Text fontWeight={ 500 }>Gas used</Text>
-        <Flex mt={ 2 } columnGap={ 2 }>
+        <Flex mt={ 2 } >
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" mr={ 4 }>
             <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
           </Skeleton>

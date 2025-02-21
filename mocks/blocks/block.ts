@@ -82,6 +82,7 @@ export const genesis: Block = {
     watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
+  confirmed_validator_count: 0,
   nonce: '0x0000000000000000',
   parent_hash: '0x0000000000000000000000000000000000000000000000000000000000000000',
   priority_fee: null,

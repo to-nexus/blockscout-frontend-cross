@@ -11,3 +11,8 @@ export const getBaseFeeValue = (baseFee: string | null) => {
   }
   return `${ getValueWithUnit(baseFee, 'wei').toFormat() } ${ currencyUnits.wei }`;
 };
+
+export const capitalize = (str: string): string => {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

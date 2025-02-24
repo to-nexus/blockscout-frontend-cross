@@ -1,6 +1,6 @@
 import { Flex, Text, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { capitalize } from 'es-toolkit';
+// import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -23,6 +23,7 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { getBaseFeeValue } from './utils';
+import { capitalize } from './utils';
 
 interface Props {
   data: Block;

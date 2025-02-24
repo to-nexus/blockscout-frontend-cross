@@ -1,5 +1,5 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
-import { capitalize } from 'es-toolkit';
+// import { capitalize } from 'es-toolkit';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import type { Block } from 'types/api/block';
@@ -10,6 +10,7 @@ import { currencyUnits } from 'lib/units';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
+import { capitalize } from './utils';
 
 interface Props {
   data: Array<Block>;

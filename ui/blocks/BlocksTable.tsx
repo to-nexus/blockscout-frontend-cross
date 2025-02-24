@@ -1,6 +1,6 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
 import { AnimatePresence } from 'framer-motion';
-import capitalize from 'lodash/capitalize';
 import React from 'react';
 import type { Block } from 'types/api/block';
 import config from 'configs/app';
@@ -21,145 +21,49 @@ interface Props {
   showSocketInfo?: boolean;
 }
 
-export const COLUMN_WIDTHS = {
-  BLOCK: '10%',
-  SIZE: '8%',
-  PROPOSER: '20%',
-  CONFIRMED_VALIDATORS: '15%', 
-  TXS: '7%',
-  GAS_USED: '15%',
-  REWARD: '10%',
-  BURNT_FEES: '10%',
-  BASE_FEE: '10%'
-} as const;
-
-export const MIN_WIDTHS = {
-  BLOCK: '100px',
-  SIZE: '80px',
-  PROPOSER: '160px',
-  CONFIRMED_VALIDATORS: '140px',
-  TXS: '50px',
-  GAS_USED: '120px',
-  REWARD: '100px',
-  BURNT_FEES: '100px',
-  BASE_FEE: '100px'
-} as const;
-
-export function calculateColumnWidths() {
-  const hiddenFields = Object.entries(config.UI.views.block.hiddenFields || {})
-    .filter(([_, isHidden]) => isHidden)
-    .map(([field]) => {
-      switch(field) {
-        case 'total_reward': return 'REWARD';
-        case 'burnt_fees': return 'BURNT_FEES';
-        case 'miner': return 'PROPOSER';
-        case 'confirmed_validator_count': return 'CONFIRMED_VALIDATORS';
-        case 'base_fee': return 'BASE_FEE';
-        default: return null;
-      }
-    })
-    .filter(Boolean) as Array<keyof typeof COLUMN_WIDTHS>;
-
-  const totalHiddenWidth = hiddenFields.reduce((sum, field) => 
-    sum + parseFloat(COLUMN_WIDTHS[field]), 0);
-  
-  const remainingColumns = (Object.keys(COLUMN_WIDTHS) as Array<keyof typeof COLUMN_WIDTHS>)
-    .filter(key => !hiddenFields.includes(key));
-
-  const additionalWidthPerColumn = totalHiddenWidth / remainingColumns.length;
-
-  const newWidths = { ...COLUMN_WIDTHS };
-  remainingColumns.forEach(column => {
-    const currentWidth = parseFloat(newWidths[column]);
-    (newWidths as Record<keyof typeof COLUMN_WIDTHS, string>)[column] = 
-      `${currentWidth + additionalWidthPerColumn}%`;
-  });
-
-  return newWidths;
-}
-
-export function calculateMinWidths() {
-  const hiddenFields = Object.entries(config.UI.views.block.hiddenFields || {})
-    .filter(([_, isHidden]) => isHidden)
-    .map(([field]) => {
-      switch(field) {
-        case 'total_reward': return 'REWARD';
-        case 'burnt_fees': return 'BURNT_FEES';
-        case 'miner': return 'PROPOSER';
-        case 'confirmed_validator_count': return 'CONFIRMED_VALIDATORS';
-        case 'base_fee': return 'BASE_FEE';
-        default: return null;
-      }
-    })
-    .filter(Boolean) as Array<keyof typeof MIN_WIDTHS>;
-
-  const totalHiddenWidth = hiddenFields.reduce((sum, field) => 
-    sum + parseInt(MIN_WIDTHS[field].replace('px', '')), 0);
-  
-  const remainingColumns = (Object.keys(MIN_WIDTHS) as Array<keyof typeof MIN_WIDTHS>)
-    .filter(key => !hiddenFields.includes(key));
-
-  const additionalWidthPerColumn = Math.floor(totalHiddenWidth / remainingColumns.length);
-
-  const newWidths = { ...MIN_WIDTHS };
-  remainingColumns.forEach(column => {
-    const currentWidth = parseInt(newWidths[column]);
-    (newWidths as Record<keyof typeof MIN_WIDTHS, string>)[column] = 
-      `${currentWidth + additionalWidthPerColumn}px`;
-  });
-
-  return newWidths;
-}
-
+const VALIDATOR_COL_WEIGHT = 23;
+const CONFIRMED_VALIDATORS_COL_WEIGHT = 15; // Added weight for new column
+const GAS_COL_WEIGHT = 33;
+const REWARD_COL_WEIGHT = 22;
+const FEES_COL_WEIGHT = 22;
 const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
-  // 동적으로 컬럼 너비 계산
-  const dynamicColumnWidths = calculateColumnWidths();
-  const dynamicMinWidths = calculateMinWidths();
+  const widthBase =
+    (!config.UI.views.block.hiddenFields?.miner ? VALIDATOR_COL_WEIGHT : 0) +
+    (!config.UI.views.block.hiddenFields?.confirmed_validator_count ? CONFIRMED_VALIDATORS_COL_WEIGHT : 0) +
+    GAS_COL_WEIGHT +
+    (!isRollup && !config.UI.views.block.hiddenFields?.total_reward ? REWARD_COL_WEIGHT : 0) +
+    (!isRollup && !config.UI.views.block.hiddenFields?.burnt_fees ? FEES_COL_WEIGHT : 0);
 
   return (
     <AddressHighlightProvider>
-      <Table w="100%" minWidth="1040px" fontWeight={ 500 }>
+      <Table minWidth="1040px" fontWeight={ 500 }>
         <Thead top={ top }>
           <Tr>
-            (
-              <Th width={ dynamicColumnWidths.BLOCK } minW={ dynamicMinWidths.BLOCK }>Block</Th>
-            )
-            (
-              <Th width={ dynamicColumnWidths.SIZE } minW={ dynamicMinWidths.SIZE }>Size, bytes</Th>
-            )
-            (
-              <Th width={ dynamicColumnWidths.PROPOSER } minW={ dynamicMinWidths.PROPOSER }>
+            <Th width="150px">Block</Th>
+            <Th width="120px">Size, bytes</Th>
+            { !config.UI.views.block.hiddenFields?.miner &&
+              <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">
                 { capitalize(getNetworkValidatorTitle()) }
-              </Th>
-            )
-            {!config.UI.views.block.hiddenFields?.confirmed_validator_count && (
-              <Th width={ dynamicColumnWidths.CONFIRMED_VALIDATORS } minW={ dynamicMinWidths.CONFIRMED_VALIDATORS }>
+              </Th> 
+            }
+            { !config.UI.views.block.hiddenFields?.confirmed_validator_count &&
+              <Th width={ `${ CONFIRMED_VALIDATORS_COL_WEIGHT / widthBase * 100 }%` } minW="140px">
                 Confirmed Validators
               </Th>
-            )}
-            (
-              <Th width={ dynamicColumnWidths.TXS } minW={ dynamicMinWidths.TXS } isNumeric>Txs</Th>
-            )
-            (
-              <Th width={ dynamicColumnWidths.GAS_USED } minW={ dynamicMinWidths.GAS_USED }>Gas used</Th>
-            )
-            {!isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
-              <Th width={ dynamicColumnWidths.REWARD } minW={ dynamicMinWidths.REWARD }>
-                Reward { currencyUnits.ether }
-              </Th>
-            )}
-            {!isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
-              <Th width={ dynamicColumnWidths.BURNT_FEES } minW={ dynamicMinWidths.BURNT_FEES }>
-                Burnt fees { currencyUnits.ether }
-              </Th>
-            )}
-            (
-              <Th width={ dynamicColumnWidths.BASE_FEE } minW={ dynamicMinWidths.BASE_FEE } isNumeric>
-                Base fee
-              </Th>
-            )
+            }
+            <Th width="64px" isNumeric>Txn</Th>
+            <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th>
+            { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
+              <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th>
+            }
+            { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
+              <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</Th>
+            }
+            { !isRollup && !config.UI.views.block.hiddenFields?.base_fee &&
+              <Th width="150px" isNumeric>Base fee</Th>
+            }
           </Tr>
         </Thead>
         <Tbody>

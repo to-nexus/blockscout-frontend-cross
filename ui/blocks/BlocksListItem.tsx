@@ -83,7 +83,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       ) }
       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
         <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 }>{ Confirmed_Validators }</Text>
+          <Text fontWeight={ 500 }>Confirmed_Validators</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block">
               { data.confirmed_validator_count }
           </Skeleton>

@@ -101,7 +101,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
-      <Flex columnGap={ 2 }>  {/* 기존의 Box를 Flex로 변경하고 columnGap 추가 */}
+      <Flex columnGap={ 2 }> 
         <Text fontWeight={ 500 }>Gas used</Text>
         <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
           <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>

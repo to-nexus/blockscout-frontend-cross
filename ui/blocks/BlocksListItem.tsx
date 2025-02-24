@@ -22,7 +22,7 @@ import { getBaseFeeValue } from './utils';
 import { COLUMN_WIDTHS, MIN_WIDTHS } from './BlocksTable';
 
 interface Props {
- data: Block[];  // Block에서 Block[]로 변경 
+ data: Block;  // Block[]에서 다시 Block으로 변경
  isLoading?: boolean;
  enableTimeIncrement?: boolean;
  columnWidths: typeof COLUMN_WIDTHS;  // 컬럼 너비 prop 추가

@@ -80,8 +80,8 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       ) }
-      <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Txs</Text>  {/* CROSS Modify Txn -> Txs */}
+      <Flex columnGap={ 2 } w="100%" mb={ 6 }> 
+        <Text fontWeight={ 500 } flex="1">Txs</Text>
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
@@ -92,17 +92,10 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
-      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && data.confirmed_validator_count !== undefined && (
-        <Flex columnGap={ 2 }>
-          <Text fontWeight={ 500 }>Confirmed Validators</Text>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
-            <span>{ data.confirmed_validator_count }</span>
-          </Skeleton>
-        </Flex>
-      ) }
-      <Box columnGap={ 2 }>
+
+      <Box w="100%" mt={ 6 }>  {/* 위쪽 간격 추가 */}
         <Text fontWeight={ 500 }>Gas used</Text>
-        <Flex mt={ 2 } >
+        <Flex mt={ 2 } alignItems="center">
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" mr={ 4 }>
             <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
           </Skeleton>
@@ -114,6 +107,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       </Box>
+      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && data.confirmed_validator_count !== undefined && (
+        <Flex columnGap={ 2 } w="100%">
+          <Text fontWeight={ 500 } width="160px">Confirmed Validators</Text>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
+            <span>{ data.confirmed_validator_count }</span>
+          </Skeleton>
+        </Flex>
+      ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>

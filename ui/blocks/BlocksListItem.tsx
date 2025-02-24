@@ -81,8 +81,8 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
            />
          </Flex>
        ) }
-
-       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && data.confirmed_validator_count !== undefined && (
+        {/* && data.confirmed_validator_count !== undefined */}
+       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
          <Flex columnGap={ 2 } width={["100%", null, COLUMN_WIDTHS.CONFIRMED_VALIDATORS]} minW={MIN_WIDTHS.CONFIRMED_VALIDATORS}>
            <Text fontWeight={ 500 }>Confirmed Validators</Text>
            <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">

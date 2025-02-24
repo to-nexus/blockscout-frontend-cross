@@ -90,6 +90,13 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Td>
       ) }
+      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
+        <Td fontSize="sm" isNumeric>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { data.confirmed_validator_count ?? 0 }
+          </Skeleton>
+        </Td>
+      ) }
       <Td isNumeric fontSize="sm">
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">

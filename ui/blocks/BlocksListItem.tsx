@@ -22,10 +22,10 @@ import { getBaseFeeValue } from './utils';
 import { COLUMN_WIDTHS, MIN_WIDTHS } from './BlocksTable';
 
 interface Props {
- data: Block;  // Block[]에서 다시 Block으로 변경
+ data: Block;
  isLoading?: boolean;
  enableTimeIncrement?: boolean;
- columnWidths: typeof COLUMN_WIDTHS;  // 컬럼 너비 prop 추가
+ columnWidths?: typeof COLUMN_WIDTHS; 
 }
 
 const isRollup = config.features.rollup.isEnabled;
@@ -86,7 +86,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
          <Flex columnGap={ 2 } width={["100%", null, COLUMN_WIDTHS.CONFIRMED_VALIDATORS]} minW={MIN_WIDTHS.CONFIRMED_VALIDATORS}>
            <Text fontWeight={ 500 }>Confirmed Validators</Text>
            <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
-             <span>{ data.confirmed_validator_count }</span>
+              <span>{ data.confirmed_validator_count ?? 0 }</span>
            </Skeleton>
          </Flex>
        ) }

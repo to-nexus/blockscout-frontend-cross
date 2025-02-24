@@ -18,7 +18,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
-
+import { COLUMN_WIDTHS, MIN_WIDTHS } from './BlocksTable';
 import { getBaseFeeValue } from './utils';
 
 interface Props {
@@ -47,7 +47,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       transitionTimingFunction="linear"
       key={ data.height }
     >
-      <Td fontSize="sm">
+      <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.BLOCK]} minW={MIN_WIDTHS.BLOCK}>
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
           { data.celo?.is_epoch_block && (
             <Tooltip label={ `Finalized epoch #${ data.celo.epoch_number }` }>
@@ -75,13 +75,15 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           display="inline-block"
         />
       </Td>
-      <Td fontSize="sm">
+      
+      <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.SIZE]} minW={MIN_WIDTHS.SIZE}>
         <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { data.size.toLocaleString() }
+          { data.size.toLocaleString() } bytes
         </Skeleton>
       </Td>
+
       { !config.UI.views.block.hiddenFields?.miner && (
-        <Td fontSize="sm">
+        <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.PROPOSER]} minW={MIN_WIDTHS.PROPOSER}>
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }
@@ -90,14 +92,16 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Td>
       ) }
+
       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
-        <Td fontSize="sm" isNumeric>
+        <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.CONFIRMED_VALIDATORS]} minW={MIN_WIDTHS.CONFIRMED_VALIDATORS} isNumeric>
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             { data.confirmed_validator_count ?? 0 }
           </Skeleton>
         </Td>
       ) }
-      <Td isNumeric fontSize="sm">
+
+      <Td isNumeric fontSize="sm" width={["100%", null, COLUMN_WIDTHS.TXS]} minW={MIN_WIDTHS.TXS}>
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({
@@ -109,7 +113,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         ) : data.transaction_count }
       </Td>
-      <Td fontSize="sm">
+
+      <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.GAS_USED]} minW={MIN_WIDTHS.GAS_USED}>
         <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
         <Flex mt={ 2 }>
           <BlockGasUsed
@@ -120,15 +125,17 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       </Td>
+
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
-        <Td fontSize="sm">
+        <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.REWARD]} minW={MIN_WIDTHS.REWARD}>
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             { totalReward.toFixed(8) }
           </Skeleton>
         </Td>
       ) }
+
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
-        <Td fontSize="sm">
+        <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.BURNT_FEES]} minW={MIN_WIDTHS.BURNT_FEES}>
           <Flex alignItems="center" columnGap={ 2 }>
             <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
@@ -142,8 +149,9 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Tooltip>
         </Td>
       ) }
+
       { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (
-        <Td fontSize="sm" isNumeric>
+        <Td fontSize="sm" width={["100%", null, COLUMN_WIDTHS.BASE_FEE]} minW={MIN_WIDTHS.BASE_FEE} isNumeric>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre-wrap" wordBreak="break-word">
             { baseFeeValue }
           </Skeleton>

@@ -101,20 +101,18 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
-      <Box>
+      <Flex columnGap={ 2 }>  {/* 기존의 Box를 Flex로 변경하고 columnGap 추가 */}
         <Text fontWeight={ 500 }>Gas used</Text>
-        <Flex mt={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" mr={ 4 }>
-            <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
-          </Skeleton>
-          <BlockGasUsed
-            gasUsed={ data.gas_used }
-            gasLimit={ data.gas_limit }
-            isLoading={ isLoading }
-            gasTarget={ data.gas_target_percentage }
-          />
-        </Flex>
-      </Box>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
+          <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
+        </Skeleton>
+        <BlockGasUsed
+          gasUsed={ data.gas_used }
+          gasLimit={ data.gas_limit }
+          isLoading={ isLoading }
+          gasTarget={ data.gas_target_percentage }
+        />
+      </Flex>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>

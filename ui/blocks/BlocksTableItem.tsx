@@ -110,8 +110,10 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         ) : data.transaction_count }
       </Td>
       <Td fontSize="sm">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
-        <Flex mt={ 2 }>
+        <Flex columnGap={ 2 }>  
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { BigNumber(data.gas_used || 0).toFormat() }
+          </Skeleton>
           <BlockGasUsed
             gasUsed={ data.gas_used }
             gasLimit={ data.gas_limit }

@@ -267,7 +267,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
            <Text fontWeight={ 500 }>Base fee</Text>
            <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
              <span>{ baseFeeValue }</span>
-           </Skeleton>
+           </Skeleton>BlocksListItem
          </Flex>
        ) }
      </Flex>

@@ -1,5 +1,5 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
-import { AnimatePresence } from 'framer-motion'; 
+import { AnimatePresence } from 'framer-motion';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 import type { Block } from 'types/api/block';
@@ -21,17 +21,30 @@ interface Props {
  showSocketInfo?: boolean;
 }
 
-// 컬럼 너비 상수 정의
-const COLUMN_WIDTHS = {
- BLOCK: '150px',
- SIZE: '100px',
- PROPOSER: '250px',
- CONFIRMED_VALIDATORS: '200px', 
- TXS: '80px',
- GAS_USED: '200px',
- REWARD: '150px',
- BURNT_FEES: '150px',
- BASE_FEE: '180px'
+// 컬럼 너비 상수
+export const COLUMN_WIDTHS = {
+ BLOCK: '10%',
+ SIZE: '8%',
+ PROPOSER: '20%',
+ CONFIRMED_VALIDATORS: '15%', 
+ TXS: '7%',
+ GAS_USED: '15%',
+ REWARD: '10%',
+ BURNT_FEES: '10%',
+ BASE_FEE: '10%'
+} as const;
+
+// 최소 너비 상수
+export const MIN_WIDTHS = {
+ BLOCK: '100px',
+ SIZE: '80px',
+ PROPOSER: '160px',
+ CONFIRMED_VALIDATORS: '140px',
+ TXS: '50px',
+ GAS_USED: '120px',
+ REWARD: '100px',
+ BURNT_FEES: '100px',
+ BASE_FEE: '100px'
 } as const;
 
 const isRollup = config.features.rollup.isEnabled;
@@ -39,27 +52,37 @@ const isRollup = config.features.rollup.isEnabled;
 const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
  return (
    <AddressHighlightProvider>
-     <Table minWidth="1040px" fontWeight={ 500 }>
+     <Table w="100%" minWidth="1040px" fontWeight={ 500 }>
        <Thead top={ top }>
          <Tr>
-           <Th width={ COLUMN_WIDTHS.BLOCK }>Block</Th>
-           <Th width={ COLUMN_WIDTHS.SIZE }>Size, bytes</Th>
+           <Th width={ COLUMN_WIDTHS.BLOCK } minW={ MIN_WIDTHS.BLOCK }>Block</Th>
+           <Th width={ COLUMN_WIDTHS.SIZE } minW={ MIN_WIDTHS.SIZE }>Size, bytes</Th>
            { !config.UI.views.block.hiddenFields?.miner &&
-             <Th width={ COLUMN_WIDTHS.PROPOSER }>{ capitalize(getNetworkValidatorTitle()) }</Th> 
+             <Th width={ COLUMN_WIDTHS.PROPOSER } minW={ MIN_WIDTHS.PROPOSER }>
+               { capitalize(getNetworkValidatorTitle()) }
+             </Th>
            }
            { !config.UI.views.block.hiddenFields?.confirmed_validator_count &&
-             <Th width={ COLUMN_WIDTHS.CONFIRMED_VALIDATORS }>Confirmed Validators</Th>
+             <Th width={ COLUMN_WIDTHS.CONFIRMED_VALIDATORS } minW={ MIN_WIDTHS.CONFIRMED_VALIDATORS }>
+               Confirmed Validators
+             </Th>
            }
-           <Th width={ COLUMN_WIDTHS.TXS } isNumeric>Txs</Th>
-           <Th width={ COLUMN_WIDTHS.GAS_USED }>Gas used</Th>
+           <Th width={ COLUMN_WIDTHS.TXS } minW={ MIN_WIDTHS.TXS } isNumeric>Txs</Th>
+           <Th width={ COLUMN_WIDTHS.GAS_USED } minW={ MIN_WIDTHS.GAS_USED }>Gas used</Th>
            { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
-             <Th width={ COLUMN_WIDTHS.REWARD }>Reward { currencyUnits.ether }</Th>
+             <Th width={ COLUMN_WIDTHS.REWARD } minW={ MIN_WIDTHS.REWARD }>
+               Reward { currencyUnits.ether }
+             </Th>
            }
            { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
-             <Th width={ COLUMN_WIDTHS.BURNT_FEES }>Burnt fees { currencyUnits.ether }</Th>
+             <Th width={ COLUMN_WIDTHS.BURNT_FEES } minW={ MIN_WIDTHS.BURNT_FEES }>
+               Burnt fees { currencyUnits.ether }
+             </Th>
            }
            { !isRollup && !config.UI.views.block.hiddenFields?.base_fee &&
-             <Th width={ COLUMN_WIDTHS.BASE_FEE } isNumeric>Base fee</Th>
+             <Th width={ COLUMN_WIDTHS.BASE_FEE } minW={ MIN_WIDTHS.BASE_FEE } isNumeric>
+               Base fee
+             </Th>
            }
          </Tr>
        </Thead>
@@ -80,7 +103,6 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
                data={ item }
                enableTimeIncrement={ page === 1 && !isLoading }
                isLoading={ isLoading }
-               columnWidths={ COLUMN_WIDTHS }  // 컬럼 너비 props 추가
              />
            )) }
          </AnimatePresence>

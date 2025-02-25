@@ -102,7 +102,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         }
       </Flex>
       { !config.UI.views.block.hiddenFields?.gas_used && (
-        <Flex columnGap={ 2 }> 
+        <Flex columnGap={ 4 }> 
         <Text fontWeight={ 500 }>Gas used</Text>
         <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
           <span>{ 

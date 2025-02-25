@@ -123,6 +123,12 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               .toFormat(2)
           }%</span>
           </Skeleton>
+          {/* <BlockGasUsed
+            gasUsed={data.gas_used }
+            gasLimit={ data.gas_limit }
+            isLoading={ isLoading }
+            gasTarget={ data.gas_target_percentage }
+          /> */}
         </Flex>
       </Td>
       ) }

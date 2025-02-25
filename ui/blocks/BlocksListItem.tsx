@@ -105,10 +105,15 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         <Flex columnGap={ 2 }> 
         <Text fontWeight={ 500 }>Gas used</Text>
         <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
-          <span>{ BigNumber(data.gas_used / data.gas_limit * 100 || 0).toFormat(1)}%</span>
+          <span>{ 
+            BigNumber(data.gas_used || 0)
+              .div(BigNumber(data.gas_limit || 1))
+              .times(100)
+              .toFormat(1)
+          }%</span>
         </Skeleton>
         <BlockGasUsed
-          gasUsed={BigNumber(data.gas_used / data.gas_limit * 100 || 0).toFormat(1)}
+          gasUsed={ data.gas_used }
           gasLimit={ data.gas_limit }
           isLoading={ isLoading }
           gasTarget={ data.gas_target_percentage }

@@ -97,8 +97,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         </Td>
       ) }
-      <Td isNumeric fontSize="sm" pr={4}>
-      <Flex columnGap={2} justifyContent="flex-end"> 
+      <Td isNumeric fontSize="sm" pr={6}>
+        <Flex columnGap={2} justifyContent="flex-end"> 
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({

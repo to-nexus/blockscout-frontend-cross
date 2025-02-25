@@ -23,7 +23,7 @@ interface Props {
 }
 
 const VALIDATOR_COL_WEIGHT = 23;
-const CONFIRMED_VALIDATORS_COL_WEIGHT = 15; // Added weight for new column
+const CONFIRMED_VALIDATORS_COL_WEIGHT = 20; // Added weight for new column
 const GAS_COL_WEIGHT = 22;
 const REWARD_COL_WEIGHT = 22;
 const FEES_COL_WEIGHT = 22;

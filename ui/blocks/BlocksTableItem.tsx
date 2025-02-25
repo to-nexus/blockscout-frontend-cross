@@ -91,7 +91,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         </Td>
       ) }
       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
-        <Td fontSize="sm">
+        <Td fontSize="sm" textAlign="center">
           <Skeleton isLoaded={ !isLoading } display="inline-block">
           { data.confirmed_validator_count }
           </Skeleton>

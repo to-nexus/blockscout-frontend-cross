@@ -1,43 +1,26 @@
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
+import BigNumber from 'bignumber.js';
 
-// 기존 코드 : 
-// 기본 수수료 값이 0.0001 Gwei 이상으로 충분히 큰 경우 → Gwei 단위로 표시
-// 기본 수수료 값이 매우 작은 경우 → Wei 단위로 표시
-
-// 변경 코드 : 
-// 모든 단위 Gwei로 표시 
 export const getBaseFeeValue = (baseFee: string | null) => {
   if (!baseFee) {
     return null;
   }
-  // 항상 Gwei 단위로 변환
-  const valGwei = getValueWithUnit(baseFee, 'gwei');
   
-  // 원래 wei 값이 매우 작을 경우 (0.0001 Gwei 미만)
-  if (valGwei.isLessThan(0.0001)) {
-    const weiValue = getValueWithUnit(baseFee, 'wei').toFormat();
-    
-    // 후행 0을 제거하는 방식으로 포맷팅
-    const formattedValue = valGwei.toNumber().toString();
-    
-    return `${formattedValue} ${currencyUnits.gwei} (${weiValue} ${currencyUnits.wei})`;
+  const valGwei = getValueWithUnit(baseFee, 'gwei');
+  const weiValue = getValueWithUnit(baseFee, 'wei');
+  
+  // Gwei의 정수 부분만 표시
+  const integerGwei = valGwei.integerValue(BigNumber.ROUND_DOWN);
+  
+  // 소수점 이하의 Gwei 값이 있는 경우 (절삭된 부분이 있는 경우)
+  if (!valGwei.isEqualTo(integerGwei)) {
+    return `${integerGwei.toFormat(0)} ${currencyUnits.gwei} (${weiValue.toFormat()} ${currencyUnits.wei})`;
   }
   
-  // 일반적인 경우 Gwei만 표시
-  return `${valGwei.toFormat(6)} ${currencyUnits.gwei}`;
+  // 소수점 이하가 없는 경우는 그냥 Gwei만 표시
+  return `${integerGwei.toFormat(0)} ${currencyUnits.gwei}`;
 };
-
-// export const getBaseFeeValue = (baseFee: string | null) => {
-//   if (!baseFee) {
-//     return null;
-//   }
-//   const valGwei = getValueWithUnit(baseFee, 'gwei');
-//   if (valGwei.isGreaterThanOrEqualTo(0.0001)) {
-//     return `${ valGwei.toFormat(4) } ${ currencyUnits.gwei }`;
-//   }
-//   return `${ getValueWithUnit(baseFee, 'wei').toFormat() } ${ currencyUnits.wei }`;
-// };
 
 export const capitalize = (str: string): string => {
   if (!str) return str;

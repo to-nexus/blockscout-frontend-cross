@@ -97,8 +97,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         </Td>
       ) }
-      <Td isNumeric fontSize="sm">
-        <Flex columnGap={ 2 }> 
+      <Td isNumeric fontSize="sm" pr={6}>
+      <Flex columnGap={2} justifyContent="flex-end"> 
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({
@@ -112,7 +112,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         ) : data.transaction_count }
         </Flex>
       </Td>
-      <Td fontSize="sm">
+      <Td fontSize="sm" pl={4}>
         <Flex columnGap={ 2 } alignItems="center">  
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             { BigNumber(data.gas_used || 0).toFormat() }

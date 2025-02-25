@@ -11,14 +11,17 @@ export const getBaseFeeValue = (baseFee: string | null) => {
   if (!baseFee) {
     return null;
   }
-
   // 항상 Gwei 단위로 변환
   const valGwei = getValueWithUnit(baseFee, 'gwei');
   
   // 원래 wei 값이 매우 작을 경우 (0.0001 Gwei 미만)
   if (valGwei.isLessThan(0.0001)) {
     const weiValue = getValueWithUnit(baseFee, 'wei').toFormat();
-    return `${valGwei.toFormat(12)} ${currencyUnits.gwei} (${weiValue} ${currencyUnits.wei})`;
+    
+    // 후행 0을 제거하는 방식으로 포맷팅
+    const formattedValue = valGwei.toNumber().toString();
+    
+    return `${formattedValue} ${currencyUnits.gwei} (${weiValue} ${currencyUnits.wei})`;
   }
   
   // 일반적인 경우 Gwei만 표시

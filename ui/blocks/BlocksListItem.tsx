@@ -101,7 +101,8 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
-      <Flex columnGap={ 2 }> 
+      { !config.UI.views.block.hiddenFields?.gas_used && (
+        <Flex columnGap={ 2 }> 
         <Text fontWeight={ 500 }>Gas used</Text>
         <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
           <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
@@ -113,6 +114,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           gasTarget={ data.gas_target_percentage }
         />
       </Flex>
+      ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>

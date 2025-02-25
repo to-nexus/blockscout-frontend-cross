@@ -112,7 +112,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         ) : data.transaction_count }
         </Flex>
       </Td>
-      <Td fontSize="sm" pl={4}>
+      { !config.UI.views.block.hiddenFields?.gas_used && ( 
+        <Td fontSize="sm" pl={4}>
         <Flex columnGap={ 2 } alignItems="center">  
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             { BigNumber(data.gas_used || 0).toFormat() }
@@ -125,6 +126,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       </Td>
+      ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
           <Skeleton isLoaded={ !isLoading } display="inline-block">

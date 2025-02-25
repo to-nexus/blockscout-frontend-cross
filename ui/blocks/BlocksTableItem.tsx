@@ -120,7 +120,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             BigNumber(data.gas_used || 0)
               .div(BigNumber(data.gas_limit || 1))
               .times(100)
-              .toFormat(1)
+              .toFormat(2)
           }%</span>
           </Skeleton>
           <BlockGasUsed

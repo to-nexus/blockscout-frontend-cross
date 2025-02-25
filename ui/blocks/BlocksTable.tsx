@@ -55,7 +55,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               </Th>
             }
             {/* <Th width="64px" isNumeric>Txn</Th> */}
-            <Th width="100px" isNumeric pr={6}>Txn</Th>
+            <Th width="100px" isNumeric pr={4}>Txn</Th>
             {/* <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th> */}
             { !config.UI.views.block.hiddenFields?.gas_used &&
               <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` } pl={4}>Gas used</Th>

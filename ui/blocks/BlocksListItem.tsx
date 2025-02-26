@@ -89,7 +89,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         </Flex>
       ) }
-      <Flex columnGap={ 2 } w="100%">
+      <Flex columnGap={ 2 } >
         <Text fontWeight={ 500 }>Txn</Text>
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">

@@ -57,10 +57,10 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               </Th>
             }
             {/* <Th width="64px" isNumeric>Txn</Th> */}
-            <Th width={ `${ TXS_COL_WEIGHT / widthBase * 100 }%` } isNumeric pr={4} textAlign="center">Txs</Th>
+            <Th width={ `${ TXS_COL_WEIGHT / widthBase * 100 }%` } isNumeric justifyContent="center">Txs</Th>
             {/* <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th> */}
             { !config.UI.views.block.hiddenFields?.gas_used &&
-              <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` } pl={6} textAlign="center">Gas used</Th>
+              <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` } justifyContent="center">Gas used</Th>
             }
             { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
               <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th>

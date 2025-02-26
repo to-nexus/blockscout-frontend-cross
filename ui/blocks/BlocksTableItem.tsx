@@ -97,7 +97,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         </Td>
       ) }
-      <Td isNumeric fontSize="sm" pr={6}>
+      <Td isNumeric fontSize="sm" pr={6} textAlign="center">
         <Flex columnGap={2} justifyContent="flex-end"> 
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">

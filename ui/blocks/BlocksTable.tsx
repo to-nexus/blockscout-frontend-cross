@@ -52,7 +52,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               </Th> 
             }
             { !config.UI.views.block.hiddenFields?.confirmed_validator_count &&
-              <Th width={ `${ CONFIRMED_VALIDATORS_COL_WEIGHT / widthBase * 100 }%` } minW="140px" textAlign="center">
+              <Th width={ `${ CONFIRMED_VALIDATORS_COL_WEIGHT / widthBase * 100 }%` } minW="140px" justifyContent="center">
                 Confirmed Validators
               </Th>
             }

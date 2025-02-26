@@ -82,14 +82,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         </Flex>
       ) }
       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
-        <Flex columnGap={ 2 } w="100%"  justifyContent="center">
+        <Flex columnGap={ 2 } w="100%" >
           <Text fontWeight={ 500 }>Confirmed_Validators</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block">
               { data.confirmed_validator_count }
           </Skeleton>
         </Flex>
       ) }
-      <Flex columnGap={ 2 } justifyContent="center">
+      <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
         { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
@@ -102,7 +102,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         }
       </Flex>
       { !config.UI.views.block.hiddenFields?.gas_used && (
-        <Flex columnGap={ 4 } justifyContent="center"> 
+        <Flex columnGap={ 4 }> 
         <Text fontWeight={ 500 }>Gas used</Text>
         <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
           <span>{ 

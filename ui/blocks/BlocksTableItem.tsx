@@ -91,37 +91,36 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         </Td>
       ) }
       { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
-        <Td fontSize="sm" textAlign="center">
+        <Td fontSize="sm" justifyContent="center" >
           <Skeleton isLoaded={ !isLoading } display="inline-block">
           { data.confirmed_validator_count }
           </Skeleton>
         </Td>
       ) }
-      <Td isNumeric fontSize="sm" pr={6} textAlign="center">
-        <Flex columnGap={2} justifyContent="flex-end"> 
-        { data.transaction_count > 0 ? (
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal href={ route({
-              pathname: '/block/[height_or_hash]',
-              query: { height_or_hash: String(data.height), tab: 'txs' },
-            }) }>
-              { data.transaction_count }
-            </LinkInternal>
-          </Skeleton>
-     
-        ) : data.transaction_count }
+      <Td isNumeric fontSize="sm" pr={6}>
+        <Flex columnGap={2} justifyContent="center"> 
+          { data.transaction_count > 0 ? (
+            <Skeleton isLoaded={ !isLoading } display="inline-block">
+              <LinkInternal href={ route({
+                pathname: '/block/[height_or_hash]',
+                query: { height_or_hash: String(data.height), tab: 'txs' },
+              }) }>
+                { data.transaction_count }
+              </LinkInternal>
+            </Skeleton>
+          ) : data.transaction_count }
         </Flex>
       </Td>
       { !config.UI.views.block.hiddenFields?.gas_used && ( 
-        <Td fontSize="sm" pl={6} textAlign="center">
-        <Flex columnGap={ 2 }>  
+      <Td fontSize="sm">
+        <Flex columnGap={ 2 } justifyContent="center">  
           <Skeleton isLoaded={ !isLoading } display="inline-block">
-           <span>{ 
-            BigNumber(data.gas_used || 0)
-              .div(BigNumber(data.gas_limit || 1))
-              .times(100)
-              .toFormat(2)
-          }%</span>
+            <span>{ 
+              BigNumber(data.gas_used || 0)
+                .div(BigNumber(data.gas_limit || 1))
+                .times(100)
+                .toFormat(2)
+            }%</span>
           </Skeleton>
           {/* <BlockGasUsed
             gasUsed={data.gas_used }

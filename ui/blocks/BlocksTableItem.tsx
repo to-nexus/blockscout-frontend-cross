@@ -113,8 +113,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         </Flex>
       </Td>
       { !config.UI.views.block.hiddenFields?.gas_used && ( 
-        <Td fontSize="sm" pl={6}>
-        <Flex columnGap={ 2 } alignItems="center">  
+        <Td fontSize="sm" pl={6} textAlign="center">
+        <Flex columnGap={ 2 }>  
           <Skeleton isLoaded={ !isLoading } display="inline-block">
            <span>{ 
             BigNumber(data.gas_used || 0)

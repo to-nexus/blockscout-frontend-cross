@@ -25,7 +25,7 @@ interface Props {
 const VALIDATOR_COL_WEIGHT = 23;
 const CONFIRMED_VALIDATORS_COL_WEIGHT = 20; // Added weight for new column
 const TXS_COL_WEIGHT = 11;
-const GAS_COL_WEIGHT = 22;
+const GAS_COL_WEIGHT = 11;
 const REWARD_COL_WEIGHT = 22;
 const FEES_COL_WEIGHT = 22;
 const isRollup = config.features.rollup.isEnabled;
@@ -57,10 +57,10 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               </Th>
             }
             {/* <Th width="64px" isNumeric>Txn</Th> */}
-            <Th width={ `${ TXS_COL_WEIGHT / widthBase * 100 }%` } isNumeric pr={4}>Txs</Th>
+            <Th width={ `${ TXS_COL_WEIGHT / widthBase * 100 }%` } isNumeric pr={4} alignItems="center">Txs</Th>
             {/* <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th> */}
             { !config.UI.views.block.hiddenFields?.gas_used &&
-              <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` } pl={6}>Gas used</Th>
+              <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` } pl={6} alignItems="center">Gas used</Th>
             }
             { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
               <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th>

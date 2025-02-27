@@ -161,6 +161,7 @@
 	| "sun"
 	| "swap"
 	| "testnet"
+	| "devnet"
 	| "token-placeholder"
 	| "token-transfers"
 	| "token"

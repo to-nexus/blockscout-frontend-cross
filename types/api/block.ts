@@ -69,6 +69,9 @@ export interface Block {
   };
   // ZILLIQA FIELDS
   zilliqa?: ZilliqaBlockData;
+
+  // CROSS ADD
+  confirmed_validator_count: number | null;
 }
 
 type ArbitrumBlockData = {

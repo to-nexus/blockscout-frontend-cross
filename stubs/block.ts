@@ -18,6 +18,7 @@ export const BLOCK: Block = {
   hash: BLOCK_HASH,
   height: 8988736,
   miner: ADDRESS_PARAMS,
+  confirmed_validator_count: 0,
   nonce: '0x0000000000000000',
   parent_hash: BLOCK_HASH,
   priority_fee: '19241635454943109',

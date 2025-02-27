@@ -8,6 +8,8 @@ export const BLOCK_FIELDS_IDS = [
   'miner',
   'L1_status',
   'batch',
+  'confirmed_validator_count',
+  'gas_used'
 ] as const;
 
 export type BlockFieldId = ArrayElement<typeof BLOCK_FIELDS_IDS>;

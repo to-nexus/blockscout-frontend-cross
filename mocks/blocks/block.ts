@@ -31,6 +31,7 @@ export const base: Block = {
     watchlist_names: [],
     ens_domain_name: null,
   },
+  confirmed_validator_count: 0,
   nonce: '0x0000000000000000',
   parent_hash: '0x44125f0eb36a9d942e0c23bb4e8117f7ba86a9537a69b59c0025986ed2b7500f',
   priority_fee: '23211757500000000',
@@ -81,6 +82,7 @@ export const genesis: Block = {
     watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
+  confirmed_validator_count: 0,
   nonce: '0x0000000000000000',
   parent_hash: '0x0000000000000000000000000000000000000000000000000000000000000000',
   priority_fee: null,
@@ -93,6 +95,7 @@ export const genesis: Block = {
   transaction_fees: '0',
   type: 'block',
   uncles_hashes: [],
+
 };
 
 export const base2: Block = {

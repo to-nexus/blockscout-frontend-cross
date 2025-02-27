@@ -9,7 +9,7 @@ import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
-import TestnetBadge from '../TestnetBadge';
+import NetworkBadge from '../NetworkBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
@@ -27,7 +27,7 @@ const NavigationDesktop = () => {
         m="0 auto"
       >
         <NetworkLogo isCollapsed={ false } w={{ lg: 'auto' }} maxW="120px"/>
-        <TestnetBadge ml={ 3 }/>
+        <NetworkBadge ml={ 3 }/>
         <chakra.nav ml="auto" mr={ config.features.account.isEnabled || config.features.blockchainInteraction.isEnabled ? 8 : 0 }>
           <Flex as="ul" columnGap={ 3 }>
             { mainNavItems.map((item) => {

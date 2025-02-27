@@ -1,10 +1,8 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
+// import { capitalize } from 'es-toolkit';
 import { AnimatePresence } from 'framer-motion';
-import capitalize from 'lodash/capitalize';
 import React from 'react';
-
 import type { Block } from 'types/api/block';
-
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -12,6 +10,7 @@ import { currencyUnits } from 'lib/units';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
+import { capitalize } from './utils';
 
 interface Props {
   data: Array<Block>;
@@ -23,17 +22,19 @@ interface Props {
   showSocketInfo?: boolean;
 }
 
-const VALIDATOR_COL_WEIGHT = 23;
-const GAS_COL_WEIGHT = 33;
+const VALIDATOR_COL_WEIGHT = 18;
+const CONFIRMED_VALIDATORS_COL_WEIGHT = 22; // Added weight for new column
+const TXS_COL_WEIGHT = 11;
+const GAS_COL_WEIGHT = 11;
 const REWARD_COL_WEIGHT = 22;
 const FEES_COL_WEIGHT = 22;
-
 const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
-
   const widthBase =
     (!config.UI.views.block.hiddenFields?.miner ? VALIDATOR_COL_WEIGHT : 0) +
+    (!config.UI.views.block.hiddenFields?.confirmed_validator_count ? CONFIRMED_VALIDATORS_COL_WEIGHT : 0) +
+    TXS_COL_WEIGHT +
     GAS_COL_WEIGHT +
     (!isRollup && !config.UI.views.block.hiddenFields?.total_reward ? REWARD_COL_WEIGHT : 0) +
     (!isRollup && !config.UI.views.block.hiddenFields?.burnt_fees ? FEES_COL_WEIGHT : 0);
@@ -46,15 +47,30 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
             <Th width="150px">Block</Th>
             <Th width="120px">Size, bytes</Th>
             { !config.UI.views.block.hiddenFields?.miner &&
-            <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th> }
-            <Th width="64px" isNumeric>Txn</Th>
-            <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th>
+              <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">
+                { capitalize(getNetworkValidatorTitle()) }
+              </Th> 
+            }
+            { !config.UI.views.block.hiddenFields?.confirmed_validator_count &&
+              <Th width={ `${ CONFIRMED_VALIDATORS_COL_WEIGHT / widthBase * 100 }%` } minW="140px" justifyContent="center" textAlign="center">
+                Confirmed Validators
+              </Th>
+            }
+            {/* <Th width="64px" isNumeric>Txn</Th> */}
+            <Th width={ `${ TXS_COL_WEIGHT / widthBase * 100 }%` } justifyContent="center">Txs</Th>
+            {/* <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th> */}
+            { !config.UI.views.block.hiddenFields?.gas_used &&
+              <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` } justifyContent="center">Gas used</Th>
+            }
             { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
-              <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th> }
+              <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th>
+            }
             { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
-              <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</Th> }
+              <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</Th>
+            }
             { !isRollup && !config.UI.views.block.hiddenFields?.base_fee &&
-              <Th width="150px" isNumeric>Base fee</Th> }
+              <Th width="150px" isNumeric>Base fee</Th>
+            }
           </Tr>
         </Thead>
         <Tbody>

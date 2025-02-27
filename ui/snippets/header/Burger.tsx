@@ -4,7 +4,7 @@ import React from 'react';
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
 import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
-import TestnetBadge from 'ui/snippets/navigation/TestnetBadge';
+import NetworkBadge from 'ui/snippets/navigation/NetworkBadge';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
 import NetworkMenuContentMobile from 'ui/snippets/networkMenu/NetworkMenuContentMobile';
@@ -48,7 +48,7 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
         <DrawerOverlay/>
         <DrawerContent maxWidth="330px">
           <DrawerBody p={ 6 } display="flex" flexDirection="column">
-            <TestnetBadge alignSelf="flex-start"/>
+            <NetworkBadge alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
               { config.UI.navigation.featuredNetworks ? (

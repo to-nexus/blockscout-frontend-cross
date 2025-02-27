@@ -83,7 +83,7 @@ const ChartWidgetContent = ({
         noAnimation={ noAnimation }
         resolution={ resolution }
       />
-      <ChartWatermarkIcon w="162px" h="15%"/>
+      {/* <ChartWatermarkIcon w="162px" h="15%"/> */}
     </Box>
   );
 };

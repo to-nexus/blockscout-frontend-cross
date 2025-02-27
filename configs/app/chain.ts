@@ -14,7 +14,7 @@ const verificationType: NetworkVerificationType = (() => {
   if (rollupType === 'zkEvm') {
     return 'sequencing';
   }
-  return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'mining';
+  return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'Proposer'; // CROSS Modified miner -> Proposer
 })();
 
 const chain = Object.freeze({
@@ -34,6 +34,7 @@ const chain = Object.freeze({
   tokenStandard: getEnvValue('NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME') || 'ERC',
   rpcUrl: getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
+  isDevnet: getEnvValue('NEXT_PUBLIC_IS_DEVNET') === 'true',
   verificationType,
 });
 

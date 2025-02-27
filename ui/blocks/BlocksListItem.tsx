@@ -1,6 +1,6 @@
 import { Flex, Text, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import capitalize from 'lodash/capitalize';
+// import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -23,6 +23,7 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { getBaseFeeValue } from './utils';
+import { capitalize } from './utils';
 
 interface Props {
   data: Block;
@@ -80,6 +81,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Flex>
       ) }
+      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
+        <Flex columnGap={ 2 } w="100%" >
+          <Text fontWeight={ 500 }>Confirmed_Validators</Text>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+              { data.confirmed_validator_count }
+          </Skeleton>
+        </Flex>
+      ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
         { data.transaction_count > 0 ? (
@@ -92,20 +101,25 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
-      <Box>
+      { !config.UI.views.block.hiddenFields?.gas_used && (
+        <Flex columnGap={ 4 }> 
         <Text fontWeight={ 500 }>Gas used</Text>
-        <Flex mt={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" mr={ 4 }>
-            <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
-          </Skeleton>
-          <BlockGasUsed
-            gasUsed={ data.gas_used }
-            gasLimit={ data.gas_limit }
-            isLoading={ isLoading }
-            gasTarget={ data.gas_target_percentage }
-          />
-        </Flex>
-      </Box>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
+          <span>{ 
+            BigNumber(data.gas_used || 0)
+              .div(BigNumber(data.gas_limit || 1))
+              .times(100)
+              .toFormat(2)
+          }%</span>
+        </Skeleton>
+        {/* <BlockGasUsed
+          gasUsed={ data.gas_used }
+          gasLimit={ data.gas_limit }
+          isLoading={ isLoading }
+          gasTarget={ data.gas_target_percentage }
+        /> */}
+      </Flex>
+      ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>

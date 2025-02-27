@@ -90,29 +90,47 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Td>
       ) }
-      <Td isNumeric fontSize="sm">
-        { data.transaction_count > 0 ? (
+      { !config.UI.views.block.hiddenFields?.confirmed_validator_count && (
+        <Td fontSize="sm" justifyContent="center" textAlign="center">
           <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal href={ route({
-              pathname: '/block/[height_or_hash]',
-              query: { height_or_hash: String(data.height), tab: 'txs' },
-            }) }>
-              { data.transaction_count }
-            </LinkInternal>
+          { data.confirmed_validator_count }
           </Skeleton>
-        ) : data.transaction_count }
+        </Td>
+      ) }
+      <Td fontSize="sm" pr={6} justifyContent="center">
+        <Flex columnGap={2}> 
+          { data.transaction_count > 0 ? (
+            <Skeleton isLoaded={ !isLoading } display="inline-block">
+              <LinkInternal href={ route({
+                pathname: '/block/[height_or_hash]',
+                query: { height_or_hash: String(data.height), tab: 'txs' },
+              }) }>
+                { data.transaction_count }
+              </LinkInternal>
+            </Skeleton>
+          ) : data.transaction_count }
+        </Flex>
       </Td>
-      <Td fontSize="sm">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
-        <Flex mt={ 2 }>
-          <BlockGasUsed
-            gasUsed={ data.gas_used }
+      { !config.UI.views.block.hiddenFields?.gas_used && ( 
+      <Td fontSize="sm" justifyContent="center">
+        <Flex columnGap={ 2 }>  
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            <span>{ 
+              BigNumber(data.gas_used || 0)
+                .div(BigNumber(data.gas_limit || 1))
+                .times(100)
+                .toFormat(2)
+            }%</span>
+          </Skeleton>
+          {/* <BlockGasUsed
+            gasUsed={data.gas_used }
             gasLimit={ data.gas_limit }
             isLoading={ isLoading }
             gasTarget={ data.gas_target_percentage }
-          />
+          /> */}
         </Flex>
       </Td>
+      ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
           <Skeleton isLoaded={ !isLoading } display="inline-block">

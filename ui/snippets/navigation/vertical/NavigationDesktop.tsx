@@ -11,7 +11,7 @@ import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
-import TestnetBadge from '../TestnetBadge';
+import NetworkBadge from '../NetworkBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 import NavLinkRewards from './NavLinkRewards';
@@ -69,7 +69,7 @@ const NavigationDesktop = () => {
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       onClick={ handleContainerClick }
     >
-      <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
+      <NetworkBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
       <Box
         as="header"
         display="flex"

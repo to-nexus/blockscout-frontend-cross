@@ -22,7 +22,7 @@ interface Props {
   showSocketInfo?: boolean;
 }
 
-const VALIDATOR_COL_WEIGHT = 20;
+const VALIDATOR_COL_WEIGHT = 18;
 const CONFIRMED_VALIDATORS_COL_WEIGHT = 22; // Added weight for new column
 const TXS_COL_WEIGHT = 11;
 const GAS_COL_WEIGHT = 11;

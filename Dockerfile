@@ -142,7 +142,7 @@ COPY ./configs/envs ./configs/envs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-RUN chown -R nextjs:nextjs /app
+RUN chown -R nextjs:nodejs /app
 
 ENTRYPOINT ["./entrypoint.sh"]
 

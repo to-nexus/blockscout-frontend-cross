@@ -26,10 +26,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Tagging
-        id: tagging
+      - name: Get Env Name
+        id: env
         run: |
-          echo "GIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+          TAG=${{ github.ref_name }}
+          echo "GIT_TAG=$(echo $TAG | cut -d'-' -f1)" >> $GITHUB_OUTPUT
+          echo $GIT_TAG
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -51,8 +53,8 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPO }}:${{ env.IMAGE_TAG }}-frontend,${{ env.ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPO }}:frontend-latest
+          tags:  ${{ env.ECR_REGISTRY }}/${{ inputs.environment }}/${{ secrets.AWS_ECR_REPO }}-frontend:${{ steps.env.outputs.GIT_TAG }},${{ env.ECR_REGISTRY }}/${{ inputs.environment }}/${{ secrets.AWS_ECR_REPO }}-frontend:latest
           platforms: linux/amd64
           build-args: |
             GIT_COMMIT_SHA=${{ env.GIT_SHA }}
-            GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
+            GIT_TAG=v1.37.6 ## Fork Version

@@ -28,5 +28,5 @@ jobs:
     if: contains(github.ref, '-release')
     uses: ./.github/workflows/common.yml
     with:
-      environment: testnet
+      environment: prod
     secrets: inherit

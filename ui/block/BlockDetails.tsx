@@ -48,14 +48,56 @@ interface Props {
   query: BlockQuery;
 }
 
+const jsonRpcHost = config.api.jsonRpcHost;
+
+const getExtraData = async(hash: string) => {
+  try {
+    if (!jsonRpcHost) {
+      throw new Error('JSON-RPC host is not defined');
+    }
+
+    const response = await fetch(jsonRpcHost, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'eth_getBlockByHash',
+        params: [
+          hash,
+          false, // 트랜잭션 세부 정보는 필요하지 않음
+        ],
+        id: 1,
+      }),
+    });
+
+    const data = await response.json() as { result?: { extraData?: string } };
+
+    // JSON-RPC 응답의 result 객체에서 extraData 필드 반환
+    return data.result?.extraData || '';
+  } catch (error) {
+    throw new Error('Error fetching block extra data:', error as Error);
+  }
+};
+
 const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
+  const [ extraData, setExtraData ] = React.useState<string>('');
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
   const { data, isPlaceholderData } = query;
+
+  React.useEffect(() => {
+    if (data?.hash) {
+      getExtraData(data.hash).then(result => {
+        setExtraData(result);
+      });
+    }
+  }, [ data?.hash ]);
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -305,28 +347,28 @@ const BlockDetails = ({ query }: Props) => {
       ) }
       { !config.UI.views.block.hiddenFields?.L1_status && rollupFeature.isEnabled &&
         ((rollupFeature.type === 'zkSync' && data.zksync) || (rollupFeature.type === 'arbitrum' && data.arbitrum)) &&
-      (
-        <>
-          <DetailsInfoItem.Label
-            hint="Status is the short interpretation of the batch lifecycle"
-            isLoading={ isPlaceholderData }
-          >
-            Status
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            { rollupFeature.type === 'zkSync' && data.zksync &&
-              <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/> }
-            { rollupFeature.type === 'arbitrum' && data.arbitrum && (
-              <VerificationSteps
-                steps={ arbitrum.verificationSteps }
-                currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
-                currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
-                isLoading={ isPlaceholderData }
-              />
-            ) }
-          </DetailsInfoItem.Value>
-        </>
-      ) }
+        (
+          <>
+            <DetailsInfoItem.Label
+              hint="Status is the short interpretation of the batch lifecycle"
+              isLoading={ isPlaceholderData }
+            >
+              Status
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { rollupFeature.type === 'zkSync' && data.zksync &&
+                <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/> }
+              { rollupFeature.type === 'arbitrum' && data.arbitrum && (
+                <VerificationSteps
+                  steps={ arbitrum.verificationSteps }
+                  currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
+                  currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
+                  isLoading={ isPlaceholderData }
+                />
+              ) }
+            </DetailsInfoItem.Value>
+          </>
+        ) }
 
       { !config.UI.views.block.hiddenFields?.miner && (
         <>
@@ -347,39 +389,39 @@ const BlockDetails = ({ query }: Props) => {
 
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' &&
         (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
-      (
-        <>
-          <DetailsInfoItemDivider/>
-          { data.arbitrum?.commitment_transaction.hash && (
-            <>
-              <DetailsInfoItem.Label
-                hint="L1 transaction containing this batch commitment"
-                isLoading={ isPlaceholderData }
-              >
-                Commitment tx
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isPlaceholderData }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-          { data.arbitrum?.confirmation_transaction.hash && (
-            <>
-              <DetailsInfoItem.Label
-                hint="L1 transaction containing confirmation of this batch"
-                isLoading={ isPlaceholderData }
-              >
-                Confirmation tx
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isPlaceholderData }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-        </>
-      ) }
+        (
+          <>
+            <DetailsInfoItemDivider/>
+            { data.arbitrum?.commitment_transaction.hash && (
+              <>
+                <DetailsInfoItem.Label
+                  hint="L1 transaction containing this batch commitment"
+                  isLoading={ isPlaceholderData }
+                >
+                  Commitment tx
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isPlaceholderData }/>
+                  { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+                </DetailsInfoItem.Value>
+              </>
+            ) }
+            { data.arbitrum?.confirmation_transaction.hash && (
+              <>
+                <DetailsInfoItem.Label
+                  hint="L1 transaction containing confirmation of this batch"
+                  isLoading={ isPlaceholderData }
+                >
+                  Confirmation tx
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isPlaceholderData }/>
+                  { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+                </DetailsInfoItem.Value>
+              </>
+            ) }
+          </>
+        ) }
 
       { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <>
@@ -553,7 +595,16 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
-
+      { extraData && (
+        <>
+          <DetailsInfoItem.Label>Extra Data</DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              { extraData }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
       { /* CUT */ }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="BlockDetails__cutLink">

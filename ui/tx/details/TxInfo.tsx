@@ -74,6 +74,26 @@ interface Props {
   socketStatus?: 'close' | 'error';
 }
 
+const numberToTxType = (number: number | null) => {
+  if (number === null) {
+    return 'UnknownTxType';
+  }
+  switch (number) {
+    case 0:
+      return 'LegacyTxType';
+    case 1:
+      return 'AccessListTxType';
+    case 2:
+      return 'DynamicFeeTxType';
+    case 3:
+      return 'BlobTxType';
+    case 7:
+      return 'FeeDelegatedDynamicFeeTxType';
+    default:
+      return 'UnknownTxType';
+  }
+};
+
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -165,12 +185,25 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label
+        hint="Type of transaction"
+        isLoading={ isLoading }
+      >
+        Transaction Type
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value flexWrap="nowrap">
+        { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
+        <Skeleton isLoaded={ !isLoading } overflow="hidden">
+          { numberToTxType(data.type) }
+        </Skeleton>
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
         isLoading={ isLoading }
       >
         {
           rollupFeature.isEnabled &&
-          (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
+            (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
             'L2 status and method' :
             'Status and method'
         }
@@ -192,7 +225,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       </DetailsInfoItem.Value>
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
-      !config.UI.views.tx.hiddenFields?.L1_status && (
+        !config.UI.views.tx.hiddenFields?.L1_status && (
         <>
           <DetailsInfoItem.Label
             hint="Detailed status progress of the transaction"
@@ -479,39 +512,39 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       <DetailsInfoItemDivider/>
 
       { (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
-      (
-        <>
-          { data.arbitrum?.commitment_transaction.hash && (
-            <>
-              <DetailsInfoItem.Label
-                hint="L1 transaction containing this batch commitment"
-                isLoading={ isLoading }
-              >
-                Commitment tx
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isLoading }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-          { data.arbitrum?.confirmation_transaction.hash && (
-            <>
-              <DetailsInfoItem.Label
-                hint="L1 transaction containing confirmation of this batch"
-                isLoading={ isLoading }
-              >
-                Confirmation tx
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isLoading }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
-              </DetailsInfoItem.Value>
-            </>
-          ) }
-          <DetailsInfoItemDivider/>
-        </>
-      ) }
+        (
+          <>
+            { data.arbitrum?.commitment_transaction.hash && (
+              <>
+                <DetailsInfoItem.Label
+                  hint="L1 transaction containing this batch commitment"
+                  isLoading={ isLoading }
+                >
+                  Commitment tx
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isLoading }/>
+                  { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+                </DetailsInfoItem.Value>
+              </>
+            ) }
+            { data.arbitrum?.confirmation_transaction.hash && (
+              <>
+                <DetailsInfoItem.Label
+                  hint="L1 transaction containing confirmation of this batch"
+                  isLoading={ isLoading }
+                >
+                  Confirmation tx
+                </DetailsInfoItem.Label>
+                <DetailsInfoItem.Value>
+                  <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isLoading }/>
+                  { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+                </DetailsInfoItem.Value>
+              </>
+            ) }
+            <DetailsInfoItemDivider/>
+          </>
+        ) }
 
       { data.zkevm_sequence_hash && (
         <>
@@ -686,7 +719,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
 
       { !config.UI.views.tx.hiddenFields?.gas_fees &&
-            (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
+        (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <>
           <DetailsInfoItem.Label
             hint={ `

@@ -106,7 +106,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME | `string` | Name of the standard for creating tokens | - | `ERC` | `BEP` | v1.31.0+ |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` | v1.0.x+ |
 | NEXT_PUBLIC_IS_DEVNET | `boolean`| Set to true if network is devnet | - | `false` | `true` | v1.0.x+ |
-
+| NEXT_PUBLIC_JSON_RPC_HOST | `string` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference | - | - | `https://core.poa.network` | v1.0.x+ |
 &nbsp;
 
 ## API configuration

@@ -43,7 +43,7 @@ export const base: HomeStats = {
   transactions_today: '26815',
   tvl: '1767425.102766552',
   // CROSS ADD
-  hourly_tps: '0', 
+  // hourly_tps: '0', 
 };
 
 export const withBtcLocked: HomeStats = {

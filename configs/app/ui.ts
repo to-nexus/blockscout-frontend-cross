@@ -27,21 +27,21 @@ const hiddenLinks = (() => {
 })();
 
 // CROSS ADD
-const homePageStats: Array<HomeStatsWidgetId> = (() => {
-  const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));
+// const homePageStats: Array<HomeStatsWidgetId> = (() => {
+//   const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));
 
-  if (!Array.isArray(parsedValue)) {
-    const rollupFeature = features.rollup;
+//   if (!Array.isArray(parsedValue)) {
+//     const rollupFeature = features.rollup;
 
-    if (rollupFeature.isEnabled && [ 'zkEvm', 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
-      return [ 'latest_batch', 'hourly_tps', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
-    }
+//     if (rollupFeature.isEnabled && [ 'zkEvm', 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
+//       return [ 'latest_batch', 'hourly_tps', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
+//     }
 
-    return [ 'total_blocks', 'hourly_tps', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
-  }
+//     return [ 'total_blocks', 'hourly_tps', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
+//   }
 
-  return parsedValue.filter((item) => HOME_STATS_WIDGET_IDS.includes(item));
-})();
+//   return parsedValue.filter((item) => HOME_STATS_WIDGET_IDS.includes(item));
+// })();
 
 const highlightedRoutes = (() => {
   const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));

@@ -46,7 +46,6 @@
 	| "copy"
 	| "cross"
 	| "delete"
-	| "devnet"
 	| "dex-tracker"
 	| "docs"
 	| "donate"

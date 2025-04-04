@@ -11,8 +11,6 @@ interface Props {
 const NetworkBadge = ({ className }: Props) => {
   if (!config.chain.isTestnet) {
     return null;
-  } else if (config.chain.isDevnet) {
-    return <IconSvg className={ className } name="devnet" h="14px" w="37px" color="red.400"/>;
   } else {
     return <IconSvg className={ className } name="testnet" h="14px" w="37px" color="red.400"/>;
   }
